@@ -1,0 +1,25 @@
+{
+  "name": "proxy-settings-manager",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "proxy",
+    "manager",
+    "settings",
+    "env",
+    "linux",
+    "gnome"
+  ],
+  "author": "tymmesyde",
+  "license": "ISC",
+  "dependencies": {
+    "is-gnome": "^4.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^8.0.1"
+  }
+}
