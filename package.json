@@ -1,10 +1,14 @@
 {
   "name": "proxy-settings-manager",
   "version": "0.2.0",
-  "description": "",
+  "description": "Allows you to manage proxy settings according to your os.",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tymmesyde/node-proxy-settings-manager"
   },
   "keywords": [
     "proxy",
@@ -12,7 +16,8 @@
     "settings",
     "env",
     "linux",
-    "gnome"
+    "gnome",
+    "windows"
   ],
   "author": "tymmesyde",
   "license": "ISC",
