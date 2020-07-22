@@ -1,6 +1,6 @@
 const proxyManager = require('../src/index.js');
 
-const proxyUrl = 'http://locahost:5050';
+const proxyUrl = 'http://localhost:5050';
 
 (async () => {
     try {
