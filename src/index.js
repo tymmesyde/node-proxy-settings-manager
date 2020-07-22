@@ -2,7 +2,8 @@ const os = require('os');
 const fs = require('fs');
 const url = require('url');
 const isGnome = require('is-gnome');
-const { LINUX_ENV, GNOME_SETTINGS } = require('./config');
+const regedit = require('regedit');
+const { LINUX_ENV, GNOME_SETTINGS, WINDOWS } = require('./config');
 const utils = require('./utils');
 
 module.exports.setHttp = url => {
@@ -42,6 +43,13 @@ async function manageProxy(proxyUrl, type, reset = false) {
                     path: LINUX_ENV.path,
                     vars: LINUX_ENV[type]
                 }, reset);
+            break;
+
+        case 'win32':
+            await manageWindows({
+                hostname,
+                port
+            }, reset);
             break;
     
         default:
@@ -84,4 +92,60 @@ function manageGnome({ hostname, port, keys }, reset) {
     }
 
     return Promise.all(commands);
+}
+
+function manageWindows({ hostname, port }, reset) {
+    const address = `${hostname}:${port}`;
+
+    const { path, server, enable } = WINDOWS;
+
+    if (!reset) {
+        regedit.putValue({
+            [path]: {
+                [server.key]: {
+                    value: address,
+                    type: server.type
+                }
+            }
+        }, err => {
+            if (err) return Promise.reject(err);
+        });
+
+        regedit.putValue({
+            [path]: {
+                [enable.key]: {
+                    value: 1,
+                    type: enable.type
+                }
+            }
+        }, err => {
+            if (err) return Promise.reject(err);
+        });
+
+        return Promise.resolve();
+    }
+
+    regedit.putValue({
+        [path]: {
+            [server.key]: {
+                value: '',
+                type: server.type
+            }
+        }
+    }, err => {
+        if (err) return Promise.reject(err);
+    });
+
+    regedit.putValue({
+        [path]: {
+            [enable.key]: {
+                value: 0,
+                type: enable.type
+            }
+        }
+    }, err => {
+        if (err) return Promise.reject(err);
+    });
+
+    return Promise.resolve();
 }

@@ -2,19 +2,21 @@
 
 Allows you to manage proxy settings according to your os.
 
-#### Currently supported:
+**Currently supported:**
+
 - Linux
-    - Gnome
+  - Gnome
+- Windows
 
 ## Install
 
-```
+```bash
 npm i proxy-settings-manager
 ```
 
 ## Use
 
-```
+```js
 const proxy = require('proxy-settings-manager');
 
 const proxyUrl = 'http://locahost:5050';

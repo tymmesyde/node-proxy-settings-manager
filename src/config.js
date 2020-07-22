@@ -16,7 +16,20 @@ const GNOME_SETTINGS = {
     }
 };
 
+const WINDOWS = {
+    path: 'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings',
+    enable: {
+        key: 'ProxyEnable',
+        type: 'REG_DWORD'
+    },
+    server: {
+        key: 'ProxyServer',
+        type: 'REG_SZ'
+    }
+};
+
 module.exports = {
     LINUX_ENV,
-    GNOME_SETTINGS
+    GNOME_SETTINGS,
+    WINDOWS
 };

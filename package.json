@@ -17,7 +17,8 @@
   "author": "tymmesyde",
   "license": "ISC",
   "dependencies": {
-    "is-gnome": "^4.0.0"
+    "is-gnome": "^4.0.0",
+    "regedit": "^3.0.3"
   },
   "devDependencies": {
     "mocha": "^8.0.1"
