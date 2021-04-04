@@ -1,5 +1,4 @@
 const os = require('os');
-const url = require('url');
 const fs = require('fs');
 const isGnome = require('is-gnome');
 const assert = require('assert');
@@ -9,7 +8,7 @@ const { childExec } = require('../src/utils.js');
 const { LINUX, GNOME, WINDOWS } = require('../src/config.js');
 
 const proxyUrl = 'http://localhost:5050';
-const { hostname: proxyHost, port: proxyPort  } = url.parse(proxyUrl);
+const { hostname: proxyHost, port: proxyPort } = new URL(proxyUrl);
 const malformedProxyUrl = 'http:/localhost:5050';
 const platform = os.platform();
 
@@ -19,7 +18,7 @@ describe('setHttp', () => {
             try {
                 await proxy.setHttp();
             } catch (e) {
-                assert.equal(e, 'Url not provided');
+                assert.strictEqual(e, 'Url not provided');
             }
         });
     });
@@ -29,7 +28,7 @@ describe('setHttp', () => {
             try {
                 await proxy.setHttp(malformedProxyUrl);
             } catch (e) {
-                assert.equal(e, 'Malformed url');
+                assert.strictEqual(e, 'Malformed url');
             }
         });
     });
@@ -50,7 +49,7 @@ describe('setHttp', () => {
                     assert.match(port, RegExp(`${proxyPort}`));
                 } else {
                     const env = fs.readFileSync(LINUX.path, { encoding: 'utf-8' });
-                    assert.equal(LINUX.http.filter(k => env.indexOf(k)).length, LINUX.http.length);
+                    assert.strictEqual(LINUX.http.filter(k => env.indexOf(k)).length, LINUX.http.length);
                 }
  
                 return Promise.resolve();
@@ -70,7 +69,7 @@ describe('setHttps', () => {
             try {
                 await proxy.setHttps();
             } catch (e) {
-                assert.equal(e, 'Url not provided');
+                assert.strictEqual(e, 'Url not provided');
             }
         });
     });
@@ -80,7 +79,7 @@ describe('setHttps', () => {
             try {
                 await proxy.setHttps(malformedProxyUrl);
             } catch (e) {
-                assert.equal(e, 'Malformed url');
+                assert.strictEqual(e, 'Malformed url');
             }
         });
     });
@@ -101,7 +100,7 @@ describe('setHttps', () => {
                     assert.match(port, RegExp(`${proxyPort}`));
                 } else {
                     const env = fs.readFileSync(LINUX.path, { encoding: 'utf-8' });
-                    assert.equal(LINUX.http.filter(k => env.indexOf(k)).length, LINUX.https.length);
+                    assert.strictEqual(LINUX.http.filter(k => env.indexOf(k)).length, LINUX.https.length);
                 }
  
                 return Promise.resolve();
@@ -130,7 +129,7 @@ describe('remove', () => {
                 assert.match(httpsHost, /''/);
             } else {
                 const env = fs.readFileSync(LINUX.path, { encoding: 'utf-8' });
-                assert.equal(!LINUX.http.filter(e => env.indexOf(e)).length, 0);
+                assert.strictEqual(!LINUX.http.filter(e => env.indexOf(e)).length, 0);
             }
 
             return Promise.resolve();
@@ -142,8 +141,8 @@ describe('remove', () => {
             const ProxyEnable = await Registry.get(WINDOWS.path, 'ProxyEnable');
             const ProxyServer = await Registry.get(WINDOWS.path, 'ProxyServer');
 
-            assert.equal(ProxyEnable, 0);
-            assert.equal(ProxyServer, '');
+            assert.strictEqual(ProxyEnable, 0);
+            assert.strictEqual(ProxyServer, '');
 
             return Promise.resolve();
         });
@@ -154,6 +153,6 @@ async function testWin32Proxy() {
     const ProxyEnable = await Registry.get(WINDOWS.path, 'ProxyEnable');
     const ProxyServer = await Registry.get(WINDOWS.path, 'ProxyServer');
 
-    assert.equal(ProxyEnable, 1);
-    assert.equal(ProxyServer, `${proxyHost}:${proxyPort}`);
+    assert.strictEqual(ProxyEnable, 1);
+    assert.strictEqual(ProxyServer, `${proxyHost}:${proxyPort}`);
 }
