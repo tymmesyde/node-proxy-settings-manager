@@ -1,4 +1,4 @@
-const regedit = require('regedit');
+const { Registry } = require('rage-edit');
 
 const REGEDIT = {
     path: 'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings',
@@ -13,19 +13,7 @@ const REGEDIT = {
 };
 
 function regeditPutValue({ key, type }, value) {
-    return new Promise((resolve, reject) => {
-        regedit.putValue({
-            [REGEDIT.path]: {
-                [key]: {
-                    value,
-                    type
-                }
-            }
-        }, err => {
-            if (err) reject(err);
-            resolve();
-        });
-    });
+    return Registry.set(REGEDIT.path, key, value, type);
 }
 
 function setWindowsProxy(hostname, port) {

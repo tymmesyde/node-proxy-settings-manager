@@ -3,7 +3,7 @@ const url = require('url');
 const fs = require('fs');
 const isGnome = require('is-gnome');
 const assert = require('assert');
-const regedit = require('regedit');
+const { Registry } = require('rage-edit');
 const proxy = require('../src/index.js');
 const { childExec } = require('../src/utils.js');
 const { LINUX, GNOME, WINDOWS } = require('../src/config.js');
@@ -139,23 +139,21 @@ describe('remove', () => {
         it('it should reset regedit values', async () => {
             await proxy.remove();
 
-            regedit.list([WINDOWS.path], (err, result) => {
-                const { ProxyEnable, ProxyServer } = result[WINDOWS.path].values;
-                assert.equal(ProxyEnable.value, 0);
-                assert.equal(ProxyServer.value, '');
-                return Promise.resolve();
-            });
+            const ProxyEnable = await Registry.get(WINDOWS.path, 'ProxyEnable');
+            const ProxyServer = await Registry.get(WINDOWS.path, 'ProxyServer');
+
+            assert.equal(ProxyEnable, 0);
+            assert.equal(ProxyServer, '');
+
+            return Promise.resolve();
         });
     }
 });
 
-function testWin32Proxy() {
-    return new Promise(resolve => {
-        regedit.list([WINDOWS.path], (err, result) => {
-            const { ProxyEnable, ProxyServer } = result[WINDOWS.path].values;
-            assert.equal(ProxyEnable.value, 1);
-            assert.equal(ProxyServer.value, `${proxyHost}:${proxyPort}`);
-            resolve();
-        });
-    });
+async function testWin32Proxy() {
+    const ProxyEnable = await Registry.get(WINDOWS.path, 'ProxyEnable');
+    const ProxyServer = await Registry.get(WINDOWS.path, 'ProxyServer');
+
+    assert.equal(ProxyEnable, 1);
+    assert.equal(ProxyServer, `${proxyHost}:${proxyPort}`);
 }
