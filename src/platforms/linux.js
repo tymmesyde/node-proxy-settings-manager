@@ -1,11 +1,13 @@
 const fs = require('fs');
 const utils = require('../utils');
-const { LINUX_ENV } = require('../config');
+const { LINUX } = require('../config');
 
 function manageLinuxProxy({ protocol, hostname, port, type }, reset) {
-    const path = LINUX_ENV.path;
-    const vars = LINUX_ENV[type];
+    const path = LINUX.path;
+    const vars = LINUX[type];
     const address = `${protocol}://${hostname}:${port}`;
+    console.log(path);
+    console.log(vars);
 
     if (fs.existsSync(path)) {
         let env = fs.readFileSync(path, { encoding: 'utf-8' });

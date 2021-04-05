@@ -1,10 +1,10 @@
-const LINUX_ENV = {
+const LINUX = {
     path: `${process.env.HOME}/.profile`,
     http: ['http_proxy', 'HTTP_PROXY'],
     https: ['https_proxy', 'HTTPS_PROXY']
 };
 
-const GNOME_SETTINGS = {
+const GNOME = {
     mode: `org.gnome.system.proxy mode`,
     http: {
         host: 'org.gnome.system.proxy.http host',
@@ -29,7 +29,7 @@ const WINDOWS = {
 };
 
 module.exports = {
-    LINUX_ENV,
-    GNOME_SETTINGS,
+    LINUX,
+    GNOME,
     WINDOWS
 };

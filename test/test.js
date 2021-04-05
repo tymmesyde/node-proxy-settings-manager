@@ -49,7 +49,7 @@ describe('setHttp', () => {
                     assert.match(port, RegExp(`${proxyPort}`));
                 } else {
                     const env = fs.readFileSync(LINUX.path, { encoding: 'utf-8' });
-                    assert.strictEqual(LINUX.http.filter(k => env.indexOf(k)).length, LINUX.http.length);
+                    assert.strictEqual(LINUX.http.filter(k => env.includes(k)).length, LINUX.http.length);
                 }
  
                 return Promise.resolve();
@@ -100,7 +100,7 @@ describe('setHttps', () => {
                     assert.match(port, RegExp(`${proxyPort}`));
                 } else {
                     const env = fs.readFileSync(LINUX.path, { encoding: 'utf-8' });
-                    assert.strictEqual(LINUX.http.filter(k => env.indexOf(k)).length, LINUX.https.length);
+                    assert.strictEqual(LINUX.https.filter(k => env.includes(k)).length, LINUX.https.length);
                 }
  
                 return Promise.resolve();
@@ -129,7 +129,8 @@ describe('remove', () => {
                 assert.match(httpsHost, /''/);
             } else {
                 const env = fs.readFileSync(LINUX.path, { encoding: 'utf-8' });
-                assert.strictEqual(!LINUX.http.filter(e => env.indexOf(e)).length, 0);
+                assert.strictEqual(LINUX.http.filter(e => env.includes(e)).length, 0);
+                assert.strictEqual(LINUX.https.filter(e => env.includes(e)).length, 0);
             }
 
             return Promise.resolve();
